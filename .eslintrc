@@ -3,5 +3,8 @@
     "canonical",
     "canonical/flowtype"
   ],
-  "root": true
+  "root": true,
+  "rules": {
+    "no-restricted-syntax": 0
+  }
 }
