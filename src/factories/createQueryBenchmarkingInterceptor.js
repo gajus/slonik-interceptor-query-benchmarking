@@ -4,12 +4,14 @@ import type {
   InterceptorType
 } from 'slonik';
 import prettyMs from 'pretty-ms';
-import wordWrap from 'word-wrap';
 import {
   table
 } from 'table';
 import {
-  stripComments
+  format
+} from 'pg-formatter';
+import {
+  wrapQuery
 } from '../utilities';
 
 export default (): InterceptorType => {
@@ -54,10 +56,11 @@ export default (): InterceptorType => {
 
       queries = queries.map((summary) => {
         return [
-          wordWrap(stripComments(summary.sql), {
-            indent: '',
-            width: 60
-          }),
+          wrapQuery(
+            format(summary.sql, {
+              spaces: 2
+            })
+          ),
           summary.executionCount,
           prettyMs(summary.average),
           prettyMs(summary.total)

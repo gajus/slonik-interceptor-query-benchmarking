@@ -1,3 +1,3 @@
 // @flow
 
-export {default as stripComments} from './stripComments';
+export {default as wrapQuery} from './wrapQuery';
