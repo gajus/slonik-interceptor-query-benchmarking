@@ -48,6 +48,8 @@ export default (userConfiguration?: UserConfigurationType): InterceptorType => {
       return result;
     },
     beforePoolConnectionRelease: (context) => {
+      let totalQueryExecutionTime = 0;
+
       let queries = Object
         .values(configuration.connections[context.connectionId].queries)
 
@@ -56,6 +58,8 @@ export default (userConfiguration?: UserConfigurationType): InterceptorType => {
           const total = query.durations.reduce((accumulator, currentValue) => {
             return accumulator + currentValue;
           }, 0);
+
+          totalQueryExecutionTime += total;
 
           const average = total / query.durations.length;
 
@@ -80,7 +84,8 @@ export default (userConfiguration?: UserConfigurationType): InterceptorType => {
           ),
           summary.executionCount,
           prettyMs(summary.average),
-          prettyMs(summary.total)
+          prettyMs(summary.total),
+          ((summary.total / totalQueryExecutionTime) * 100).toFixed(2) + '%'
         ];
       });
 
@@ -88,7 +93,8 @@ export default (userConfiguration?: UserConfigurationType): InterceptorType => {
         'Query',
         'Execution\ncount',
         'Average\ntime',
-        'Total\ntime'
+        'Total\ntime',
+        'Total\ntime %'
       ]);
 
       if (configuration.printTable) {
