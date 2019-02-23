@@ -69,3 +69,46 @@ import {
 () => InterceptorType;
 
 ```
+
+## Example usage
+
+```js
+import {
+  createPool
+} from 'slonik';
+import {
+  createQueryBenchmarkingInterceptor
+} from 'slonik-interceptor-query-benchmarking';
+
+const interceptors = [
+  createQueryBenchmarkingInterceptor()
+];
+
+const connection = createPool('postgres://', {
+  interceptors
+});
+
+connection.any(sql`
+  SELECT
+    id,
+    code_alpha_2
+  FROM country
+`);
+
+```
+
+Produces log:
+
+```sql
+╔═════════════════╤═══════════╤═════════╤═══════╗
+║ Query           │ Execution │ Average │ Total ║
+║                 │ count     │ time    │ time  ║
+╟─────────────────┼───────────┼─────────┼───────╢
+║ SELECT          │ 1         │ 25ms    │ 25ms  ║
+║    id,          │           │         │       ║
+║    code_alpha_2 │           │         │       ║
+║ FROM            │           │         │       ║
+║    country      │           │         │       ║
+╚═════════════════╧═══════════╧═════════╧═══════╝
+
+```

@@ -14,6 +14,7 @@ test('afterPoolConnection creates a queries haystack using connectionId', (t) =>
     connectionId: 'foo'
   };
 
+  // $FlowFixMe
   interceptor.afterPoolConnection(context);
 
   t.deepEqual(configuration.connections, {
@@ -35,7 +36,10 @@ test('beforePoolConnectionRelease destroys data associated with the connection',
     connectionId: 'foo'
   };
 
+  // $FlowFixMe
   interceptor.afterPoolConnection(context);
+
+  // $FlowFixMe
   interceptor.beforePoolConnectionRelease(context);
 
   t.deepEqual(configuration.connections, {});

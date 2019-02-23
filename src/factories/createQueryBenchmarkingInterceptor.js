@@ -23,26 +23,33 @@ type UserConfigurationType = {|
   +printTable?: boolean
 |};
 
+const defaultConfiguration = {
+  connections: {},
+  printTable: true
+};
+
 export default (userConfiguration?: UserConfigurationType): InterceptorType => {
-  const connections = userConfiguration && userConfiguration.connections || {};
-  const printTable = userConfiguration && userConfiguration.printTable !== false;
+  const configuration = {
+    ...defaultConfiguration,
+    ...userConfiguration
+  };
 
   return {
     afterPoolConnection: (context) => {
-      connections[context.connectionId] = {
+      configuration.connections[context.connectionId] = {
         queries: {}
       };
     },
     afterQueryExecution: async (context, query, result) => {
-      const startTime = connections[context.connectionId].queries[context.originalQuery.sql].queryStartTimes[context.queryId];
+      const startTime = configuration.connections[context.connectionId].queries[context.originalQuery.sql].queryStartTimes[context.queryId];
 
-      connections[context.connectionId].queries[context.originalQuery.sql].durations.push(Number(process.hrtime.bigint() - startTime) / 1000000);
+      configuration.connections[context.connectionId].queries[context.originalQuery.sql].durations.push(Number(process.hrtime.bigint() - startTime) / 1000000);
 
       return result;
     },
     beforePoolConnectionRelease: (context) => {
       let queries = Object
-        .values(connections[context.connectionId].queries)
+        .values(configuration.connections[context.connectionId].queries)
 
         // eslint-disable-next-line flowtype/no-weak-types
         .map((query: Object) => {
@@ -84,24 +91,24 @@ export default (userConfiguration?: UserConfigurationType): InterceptorType => {
         'Total\ntime'
       ]);
 
-      if (printTable) {
+      if (configuration.printTable) {
         // eslint-disable-next-line no-console
         console.log(table(queries));
       }
 
       // eslint-disable-next-line fp/no-delete
-      delete connections[context.connectionId];
+      delete configuration.connections[context.connectionId];
     },
     beforeQueryExecution: async (context) => {
-      if (!connections[context.connectionId].queries[context.originalQuery.sql]) {
-        connections[context.connectionId].queries[context.originalQuery.sql] = {
+      if (!configuration.connections[context.connectionId].queries[context.originalQuery.sql]) {
+        configuration.connections[context.connectionId].queries[context.originalQuery.sql] = {
           durations: [],
           queryStartTimes: {},
           sql: context.originalQuery.sql
         };
       }
 
-      connections[context.connectionId].queries[context.originalQuery.sql].queryStartTimes[context.queryId] = process.hrtime.bigint();
+      configuration.connections[context.connectionId].queries[context.originalQuery.sql].queryStartTimes[context.queryId] = process.hrtime.bigint();
     }
   };
 };
