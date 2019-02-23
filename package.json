@@ -12,7 +12,7 @@
   "dependencies": {
     "pg-formatter": "^1.1.1",
     "pretty-ms": "^4.0.0",
-    "slonik": "^15.0.0",
+    "slonik": "^15.1.1",
     "table": "^5.2.3",
     "wrap-ansi": "^4.0.0"
   },

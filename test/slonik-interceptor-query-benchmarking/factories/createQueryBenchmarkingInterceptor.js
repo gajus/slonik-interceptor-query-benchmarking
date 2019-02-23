@@ -11,7 +11,8 @@ test('afterPoolConnection creates a queries haystack using connectionId', (t) =>
   const interceptor = createQueryBenchmarkingInterceptor(configuration);
 
   const context = {
-    connectionId: 'foo'
+    connectionId: 'foo',
+    connectionType: 'EXPLICIT'
   };
 
   // $FlowFixMe
@@ -33,7 +34,8 @@ test('beforePoolConnectionRelease destroys data associated with the connection',
   const interceptor = createQueryBenchmarkingInterceptor(configuration);
 
   const context = {
-    connectionId: 'foo'
+    connectionId: 'foo',
+    connectionType: 'EXPLICIT'
   };
 
   // $FlowFixMe

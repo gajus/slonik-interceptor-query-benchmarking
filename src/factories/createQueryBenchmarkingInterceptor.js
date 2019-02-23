@@ -1,6 +1,7 @@
 // @flow
 
 import type {
+  ConnecionTypeType,
   InterceptorType
 } from 'slonik';
 import prettyMs from 'pretty-ms';
@@ -15,17 +16,23 @@ import {
 } from '../utilities';
 
 /**
- * @property connections Internal connections property. Exposed for development purposes.
+ * @property connections Internal connections property. Exposed for development purposes. (Default: {})
+ * @property printTable Dictates whether to output the benchmark table. Exposed for development purposes. (Default: true)
+ * @property targetConnectionTypes Dictates which connections to benchmark. (Default: [EXPLICIT])
  */
 type UserConfigurationType = {|
   // eslint-disable-next-line flowtype/no-weak-types
   +connections?: Object,
-  +printTable?: boolean
+  +printTable?: boolean,
+  +targetConnectionTypes?: $ReadOnlyArray<ConnecionTypeType>
 |};
 
 const defaultConfiguration = {
   connections: {},
-  printTable: true
+  printTable: true,
+  targetConnectionTypes: [
+    'EXPLICIT'
+  ]
 };
 
 export default (userConfiguration?: UserConfigurationType): InterceptorType => {
@@ -36,11 +43,17 @@ export default (userConfiguration?: UserConfigurationType): InterceptorType => {
 
   return {
     afterPoolConnection: (context) => {
-      configuration.connections[context.connectionId] = {
-        queries: {}
-      };
+      if (configuration.targetConnectionTypes.includes(context.connectionType)) {
+        configuration.connections[context.connectionId] = {
+          queries: {}
+        };
+      }
     },
     afterQueryExecution: async (context, query, result) => {
+      if (!configuration.connections[context.connectionId]) {
+        return result;
+      }
+
       const startTime = configuration.connections[context.connectionId].queries[context.originalQuery.sql].queryStartTimes[context.queryId];
 
       configuration.connections[context.connectionId].queries[context.originalQuery.sql].durations.push(Number(process.hrtime.bigint() - startTime) / 1000000);
@@ -48,6 +61,10 @@ export default (userConfiguration?: UserConfigurationType): InterceptorType => {
       return result;
     },
     beforePoolConnectionRelease: (context) => {
+      if (!configuration.connections[context.connectionId]) {
+        return;
+      }
+
       let totalQueryExecutionTime = 0;
 
       let queries = Object
@@ -106,6 +123,10 @@ export default (userConfiguration?: UserConfigurationType): InterceptorType => {
       delete configuration.connections[context.connectionId];
     },
     beforeQueryExecution: async (context) => {
+      if (!configuration.connections[context.connectionId]) {
+        return;
+      }
+
       if (!configuration.connections[context.connectionId].queries[context.originalQuery.sql]) {
         configuration.connections[context.connectionId].queries[context.originalQuery.sql] = {
           durations: [],

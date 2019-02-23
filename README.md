@@ -66,7 +66,14 @@ import {
 ```
 
 ```js
-() => InterceptorType;
+/**
+ * @property targetConnectionTypes Dictates what connections to benchmark. (Default: [EXPLICIT])
+ */
+type UserConfigurationType = {|
+  +targetConnectionTypes: $ReadOnlyArray<ConnecionTypeType>
+|};
+
+(userConfiguration: UserConfigurationType) => InterceptorType;
 
 ```
 
@@ -84,16 +91,18 @@ const interceptors = [
   createQueryBenchmarkingInterceptor()
 ];
 
-const connection = createPool('postgres://', {
+const pool = createPool('postgres://', {
   interceptors
 });
 
-connection.any(sql`
-  SELECT
-    id,
-    code_alpha_2
-  FROM country
-`);
+pool.connect((connection) => {
+  return connection.any(sql`
+    SELECT
+      id,
+      code_alpha_2
+    FROM country
+  `);
+});
 
 ```
 
