@@ -14,8 +14,18 @@ import {
   wrapQuery
 } from '../utilities';
 
-export default (): InterceptorType => {
-  const connections = {};
+/**
+ * @property connections Internal connections property. Exposed for development purposes.
+ */
+type UserConfigurationType = {|
+  // eslint-disable-next-line flowtype/no-weak-types
+  +connections?: Object,
+  +printTable?: boolean
+|};
+
+export default (userConfiguration?: UserConfigurationType): InterceptorType => {
+  const connections = userConfiguration && userConfiguration.connections || {};
+  const printTable = userConfiguration && userConfiguration.printTable !== false;
 
   return {
     afterPoolConnection: (context) => {
@@ -74,8 +84,10 @@ export default (): InterceptorType => {
         'Total\ntime'
       ]);
 
-      // eslint-disable-next-line no-console
-      console.log(table(queries));
+      if (printTable) {
+        // eslint-disable-next-line no-console
+        console.log(table(queries));
+      }
 
       // eslint-disable-next-line fp/no-delete
       delete connections[context.connectionId];
