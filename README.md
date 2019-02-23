@@ -1,8 +1,8 @@
 # slonik-interceptor-query-benchmarking
 
-[![Travis build status](http://img.shields.io/travis/gajus/slonik-interceptor-benchmarking/master.svg?style=flat-square)](https://travis-ci.org/gajus/slonik-interceptor-benchmarking)
-[![Coveralls](https://img.shields.io/coveralls/gajus/slonik-interceptor-benchmarking.svg?style=flat-square)](https://coveralls.io/github/gajus/slonik-interceptor-benchmarking)
-[![NPM version](http://img.shields.io/npm/v/slonik-interceptor-benchmarking.svg?style=flat-square)](https://www.npmjs.org/package/slonik-interceptor-benchmarking)
+[![Travis build status](http://img.shields.io/travis/gajus/slonik-interceptor-query-benchmarking/master.svg?style=flat-square)](https://travis-ci.org/gajus/slonik-interceptor-query-benchmarking)
+[![Coveralls](https://img.shields.io/coveralls/gajus/slonik-interceptor-query-benchmarking.svg?style=flat-square)](https://coveralls.io/github/gajus/slonik-interceptor-query-benchmarking)
+[![NPM version](http://img.shields.io/npm/v/slonik-interceptor-query-benchmarking.svg?style=flat-square)](https://www.npmjs.org/package/slonik-interceptor-query-benchmarking)
 [![Canonical Code Style](https://img.shields.io/badge/code%20style-canonical-blue.svg?style=flat-square)](https://github.com/gajus/canonical)
 [![Twitter Follow](https://img.shields.io/twitter/follow/kuizinas.svg?style=social&label=Follow)](https://twitter.com/kuizinas)
 
