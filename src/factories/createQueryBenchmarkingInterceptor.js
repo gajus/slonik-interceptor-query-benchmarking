@@ -102,7 +102,7 @@ export default (userConfiguration?: UserConfigurationType): InterceptorType => {
           summary.executionCount,
           prettyMs(summary.average),
           prettyMs(summary.total),
-          ((summary.total / totalQueryExecutionTime) * 100).toFixed(2) + '%'
+          (summary.total / totalQueryExecutionTime * 100).toFixed(2) + '%'
         ];
       });
 
