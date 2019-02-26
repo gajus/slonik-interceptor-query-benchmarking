@@ -1,7 +1,7 @@
 // @flow
 
 import type {
-  ConnecionTypeType,
+  ConnectionTypeType,
   InterceptorType
 } from 'slonik';
 import prettyMs from 'pretty-ms';
@@ -24,7 +24,7 @@ type UserConfigurationType = {|
   // eslint-disable-next-line flowtype/no-weak-types
   +connections?: Object,
   +printTable?: boolean,
-  +targetConnectionTypes?: $ReadOnlyArray<ConnecionTypeType>
+  +targetConnectionTypes?: $ReadOnlyArray<ConnectionTypeType>
 |};
 
 const defaultConfiguration = {
