@@ -6,7 +6,7 @@ export default (query: string): string => {
   return wrapAnsi(query,
     80,
     {
-      trim: false
+      trim: false,
     })
     .split('\n')
     .filter((line) => {

@@ -2,17 +2,17 @@
 
 import type {
   ConnectionTypeType,
-  InterceptorType
+  InterceptorType,
 } from 'slonik';
 import prettyMs from 'pretty-ms';
 import {
-  table
+  table,
 } from 'table';
 import {
-  format
+  format,
 } from 'pg-formatter';
 import {
-  wrapQuery
+  wrapQuery,
 } from '../utilities';
 
 /**
@@ -24,28 +24,28 @@ type UserConfigurationType = {|
   // eslint-disable-next-line flowtype/no-weak-types
   +connections?: Object,
   +printTable?: boolean,
-  +targetConnectionTypes?: $ReadOnlyArray<ConnectionTypeType>
+  +targetConnectionTypes?: $ReadOnlyArray<ConnectionTypeType>,
 |};
 
 const defaultConfiguration = {
   connections: {},
   printTable: true,
   targetConnectionTypes: [
-    'EXPLICIT'
-  ]
+    'EXPLICIT',
+  ],
 };
 
 export default (userConfiguration?: UserConfigurationType): InterceptorType => {
   const configuration = {
     ...defaultConfiguration,
-    ...userConfiguration
+    ...userConfiguration,
   };
 
   return {
     afterPoolConnection: (context) => {
       if (configuration.targetConnectionTypes.includes(context.connectionType)) {
         configuration.connections[context.connectionId] = {
-          queries: {}
+          queries: {},
         };
       }
     },
@@ -84,7 +84,7 @@ export default (userConfiguration?: UserConfigurationType): InterceptorType => {
             ...query,
             average,
             executionCount: query.durations.length,
-            total
+            total,
           };
         });
 
@@ -96,13 +96,13 @@ export default (userConfiguration?: UserConfigurationType): InterceptorType => {
         return [
           wrapQuery(
             format(summary.sql, {
-              spaces: 2
+              spaces: 2,
             })
           ),
           summary.executionCount,
           prettyMs(summary.average),
           prettyMs(summary.total),
-          (summary.total / totalQueryExecutionTime * 100).toFixed(2) + '%'
+          (summary.total / totalQueryExecutionTime * 100).toFixed(2) + '%',
         ];
       });
 
@@ -111,7 +111,7 @@ export default (userConfiguration?: UserConfigurationType): InterceptorType => {
         'Execution\ncount',
         'Average\ntime',
         'Total\ntime',
-        'Total\ntime %'
+        'Total\ntime %',
       ]);
 
       if (configuration.printTable) {
@@ -131,11 +131,11 @@ export default (userConfiguration?: UserConfigurationType): InterceptorType => {
         configuration.connections[context.connectionId].queries[context.originalQuery.sql] = {
           durations: [],
           queryStartTimes: {},
-          sql: context.originalQuery.sql
+          sql: context.originalQuery.sql,
         };
       }
 
       configuration.connections[context.connectionId].queries[context.originalQuery.sql].queryStartTimes[context.queryId] = process.hrtime.bigint();
-    }
+    },
   };
 };

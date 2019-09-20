@@ -5,14 +5,14 @@ import createQueryBenchmarkingInterceptor from '../../../src/factories/createQue
 
 test('afterPoolConnection creates a queries haystack using connectionId', (t) => {
   const configuration = {
-    connections: {}
+    connections: {},
   };
 
   const interceptor = createQueryBenchmarkingInterceptor(configuration);
 
   const context = {
     connectionId: 'foo',
-    connectionType: 'EXPLICIT'
+    connectionType: 'EXPLICIT',
   };
 
   // $FlowFixMe
@@ -20,22 +20,22 @@ test('afterPoolConnection creates a queries haystack using connectionId', (t) =>
 
   t.deepEqual(configuration.connections, {
     foo: {
-      queries: {}
-    }
+      queries: {},
+    },
   });
 });
 
 test('beforePoolConnectionRelease destroys data associated with the connection', (t) => {
   const configuration = {
     connections: {},
-    printTable: false
+    printTable: false,
   };
 
   const interceptor = createQueryBenchmarkingInterceptor(configuration);
 
   const context = {
     connectionId: 'foo',
-    connectionType: 'EXPLICIT'
+    connectionType: 'EXPLICIT',
   };
 
   // $FlowFixMe

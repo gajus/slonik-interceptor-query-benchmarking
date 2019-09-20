@@ -1,5 +1,5 @@
 // @flow
 
 export {
-  createQueryBenchmarkingInterceptor
+  createQueryBenchmarkingInterceptor,
 } from './factories';
