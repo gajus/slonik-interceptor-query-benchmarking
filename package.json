@@ -19,12 +19,12 @@
     ]
   },
   "dependencies": {
-    "core-js": "^3.3.1",
+    "core-js": "^3.3.6",
     "pg-formatter": "^1.1.1",
     "pretty-ms": "^5.0.0",
-    "slonik": "^19.0.4",
+    "slonik": "^19.5.0",
     "table": "^5.4.6",
-    "wrap-ansi": "^6.0.0"
+    "wrap-ansi": "^6.1.0"
   },
   "description": "Benchmarks Slonik queries.",
   "devDependencies": {
@@ -37,13 +37,13 @@
     "babel-plugin-istanbul": "^5.2.0",
     "babel-plugin-transform-export-default-name": "^2.0.4",
     "coveralls": "^3.0.7",
-    "eslint": "^6.5.1",
-    "eslint-config-canonical": "^17.7.0",
-    "flow-bin": "^0.109.0",
+    "eslint": "^6.6.0",
+    "eslint-config-canonical": "^17.8.0",
+    "flow-bin": "^0.111.1",
     "flow-copy-source": "^2.0.8",
     "husky": "^3.0.9",
     "nyc": "^14.1.1",
-    "semantic-release": "^15.13.24",
+    "semantic-release": "^15.13.29",
     "sinon": "^7.5.0"
   },
   "engines": {

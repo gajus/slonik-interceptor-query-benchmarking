@@ -97,7 +97,7 @@ export default (userConfiguration?: UserConfigurationType): InterceptorType => {
           wrapQuery(
             format(summary.sql, {
               spaces: 2,
-            })
+            }),
           ),
           summary.executionCount,
           prettyMs(summary.average),
