@@ -51,16 +51,16 @@ export default (userConfiguration?: UserConfigurationType): InterceptorType => {
 
       return null;
     },
-    afterQueryExecution: async (context, query, result) => {
+    afterQueryExecution: async (context) => {
       if (!configuration.connections[context.connectionId]) {
-        return result;
+        return null;
       }
 
       const startTime = configuration.connections[context.connectionId].queries[context.originalQuery.sql].queryStartTimes[context.queryId];
 
       configuration.connections[context.connectionId].queries[context.originalQuery.sql].durations.push(Number(process.hrtime.bigint() - startTime) / 1000000);
 
-      return result;
+      return null;
     },
     beforePoolConnectionRelease: (context) => {
       if (!configuration.connections[context.connectionId]) {
