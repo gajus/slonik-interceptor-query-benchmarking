@@ -48,6 +48,8 @@ export default (userConfiguration?: UserConfigurationType): InterceptorType => {
           queries: {},
         };
       }
+
+      return null;
     },
     afterQueryExecution: async (context, query, result) => {
       if (!configuration.connections[context.connectionId]) {
@@ -62,7 +64,7 @@ export default (userConfiguration?: UserConfigurationType): InterceptorType => {
     },
     beforePoolConnectionRelease: (context) => {
       if (!configuration.connections[context.connectionId]) {
-        return;
+        return null;
       }
 
       let totalQueryExecutionTime = 0;
@@ -121,10 +123,12 @@ export default (userConfiguration?: UserConfigurationType): InterceptorType => {
 
       // eslint-disable-next-line fp/no-delete
       delete configuration.connections[context.connectionId];
+
+      return null;
     },
     beforeQueryExecution: async (context) => {
       if (!configuration.connections[context.connectionId]) {
-        return;
+        return null;
       }
 
       if (!configuration.connections[context.connectionId].queries[context.originalQuery.sql]) {
@@ -136,6 +140,8 @@ export default (userConfiguration?: UserConfigurationType): InterceptorType => {
       }
 
       configuration.connections[context.connectionId].queries[context.originalQuery.sql].queryStartTimes[context.queryId] = process.hrtime.bigint();
+
+      return null;
     },
   };
 };
