@@ -22,7 +22,7 @@
     "core-js": "^3.4.0",
     "pg-formatter": "^1.1.2",
     "pretty-ms": "^5.0.0",
-    "slonik": "^21.0.0",
+    "slonik": "^21.4.0",
     "table": "^5.4.6",
     "wrap-ansi": "^6.1.0"
   },
